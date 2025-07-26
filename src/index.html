@@ -345,20 +345,29 @@
     }
 
     function ativarEventosDePopup() {
-      document.querySelectorAll('.card').forEach(card => {
-        card.onclick = (e) => {
-          e.stopPropagation(); // impede o clique de propagar pro body
-          document.querySelectorAll('.card').forEach(c => {
-            if (c !== card) c.classList.remove('show');
-          });
-          card.classList.toggle('show');
-        };
+      const cards = document.querySelectorAll('.card');
+
+      cards.forEach(card => {
+        card.addEventListener('click', function (e) {
+          e.stopPropagation(); // impede o clique de fechar imediatamente
+
+          // se já está aberto, fecha
+          const estavaAberto = this.classList.contains('show');
+
+          // fecha todos
+          cards.forEach(c => c.classList.remove('show'));
+
+          // só abre se não estava aberto antes
+          if (!estavaAberto) {
+            this.classList.add('show');
+          }
+        });
       });
 
-      // Fechar se clicar fora
-      document.body.onclick = () => {
-        document.querySelectorAll('.card').forEach(card => card.classList.remove('show'));
-      };
+      // Fechar tudo se clicar fora
+      document.body.addEventListener('click', () => {
+        cards.forEach(c => c.classList.remove('show'));
+      });
     }
 
     criarBotoes();
