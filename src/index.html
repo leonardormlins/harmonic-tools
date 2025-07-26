@@ -344,9 +344,26 @@
       }
     }
 
+    function ativarEventosDePopup() {
+      document.querySelectorAll('.card').forEach(card => {
+        card.onclick = (e) => {
+          e.stopPropagation(); // impede o clique de propagar pro body
+          document.querySelectorAll('.card').forEach(c => {
+            if (c !== card) c.classList.remove('show');
+          });
+          card.classList.toggle('show');
+        };
+      });
+
+      // Fechar se clicar fora
+      document.body.onclick = () => {
+        document.querySelectorAll('.card').forEach(card => card.classList.remove('show'));
+      };
+    }
 
     criarBotoes();
     atualizarCards();
+    ativarEventosDePopup();
   </script>
 </body>
 
